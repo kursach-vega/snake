@@ -1,7 +1,4 @@
-#include "field_object.hpp"
-
-#include <set>
-#include <iostream>
+#include "../headers/field_object.hpp"
 
 Field_Object::Field_Object(short y, short x, TYPE_FIELD_OBJECT type) { 
 	this->y = y;

@@ -1,4 +1,4 @@
-#include "snake.hpp"
+#include "../headers/snake.hpp"
 #include <cstdlib>
 
 Field_Object Snake::_generation_apple() const {
@@ -46,7 +46,7 @@ Field_Object Snake::_new_index_snake() const {
 
 Snake::Snake(const size_t HEIGHT, const size_t WIDTH) : _WIDTH(WIDTH),
         _HEIGHT(HEIGHT), _FREE_ELEMENTS(WIDTH * HEIGHT), _step(STEP_SNAKE::RIGHT), 
-	_end_game(false), _gray_apples(0),
+    _gray_apples(0), _end_game(false),
 	_data(HEIGHT, (std::vector<TYPE_FIELD_OBJECT> (WIDTH, 
    			 	                        TYPE_FIELD_OBJECT::NONE))) {
 
@@ -84,6 +84,10 @@ const std::set<Field_Object>& Snake::get_apple() const {
 	return this->_apple;
 }
 
+const std::vector<Field_Object>& Snake::get_obstacles() const {
+    return this->_obstacles;
+}
+
 bool Snake::set_step(STEP_SNAKE new_step) {
 	short step_difference = static_cast<short>(this->_step);
 	step_difference -= static_cast<short>(new_step);
@@ -112,8 +116,7 @@ bool Snake::step() {
 			this->_data[snake_tail.y][snake_tail.x] = snake_tail.type; 
 			this->_gray_apples += 1;
 			Field_Object new_index_apple = this->_generation_apple();
-			this->_apple.erase(Field_Object(new_index.x, new_index.y,
-							TYPE_FIELD_OBJECT::APPLE));
+			this->_apple.erase(new_index);
 		 	this->_snake.push_back(new_index);
 			this->_data[new_index.y][new_index.x] = new_index.type;
 			if ( new_index_apple.x == -1 ) {
