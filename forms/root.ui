@@ -47,7 +47,7 @@
        <string notr="true">background-color: rgb(23, 171, 46);</string>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="menu">
        <attribute name="title">
@@ -57,7 +57,7 @@
         <item row="0" column="0">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="text_from_menu">
             <property name="font">
              <font>
               <pointsize>30</pointsize>
@@ -299,7 +299,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="text_from_game">
           <property name="font">
            <font>
             <pointsize>30</pointsize>
@@ -348,6 +348,9 @@
               <width>281</width>
               <height>121</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(43, 136, 22);</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -458,19 +461,19 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="game_back">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
              </font>
             </property>
             <property name="text">
-             <string>Меню</string>
+             <string>Назад</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="game_exit">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
@@ -489,6 +492,24 @@
        <attribute name="title">
         <string>customization</string>
        </attribute>
+       <widget class="QLabel" name="label_5">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>180</y>
+          <width>361</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>30</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Настройки</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -496,7 +517,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="text_from_about_the_game">
           <property name="font">
            <font>
             <pointsize>30</pointsize>
@@ -527,19 +548,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QPushButton" name="about_game_back">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
              </font>
             </property>
             <property name="text">
-             <string>Меню</string>
+             <string>Назад</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_7">
+           <widget class="QPushButton" name="about_game_exit">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
