@@ -7,7 +7,7 @@ root::root(QWidget* parent) : QMainWindow(parent),
 
     this->_ui->setupUi(this);
     this->_ui->tab_game->tabBar()->hide();
-    this->_ui->tab_game->setCurrentIndex(0);
+   // this->_ui->tab_game->setCurrentIndex(0);
 }
 
 root::~root() {
