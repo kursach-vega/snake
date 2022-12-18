@@ -1,6 +1,9 @@
 #include "../headers/root.hpp"
 #include "ui_root.h"
 #include <QTabBar>
+#include <QStandardItemModel>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 void root::_switching_window(WINDOW_TYPES other) {
     this->_parent_window = this->_current_window;
@@ -16,6 +19,11 @@ root::root(QWidget* parent) : QMainWindow(parent),
 
     this->_ui->setupUi(this);
     this->_ui->tab_game->tabBar()->hide();
+    QMediaPlayer *player = new QMediaPlayer;
+    player->setMedia(QUrl::fromLocalFile("/home/pbalykov/вега/3_семестр/МИСП/Курсовая/snake/x.mp3"));
+    player->setVolume(50);
+    player->play();
+
     this->_switching_window(WINDOW_TYPES::MENU);
     return ;
 }
@@ -48,21 +56,16 @@ void root::on_button_exit_clicked() {
 }
 
 void root::on_game_back_clicked() {
-    this->_switching_window(WINDOW_TYPES::MENU);
-    return ;
-}
-
-void root::on_game_exit_clicked() {
-    this->close();
+    this->_switching_window(this->_parent_window);
     return ;
 }
 
 void root::on_about_game_back_clicked() {
-    this->_switching_window(WINDOW_TYPES::MENU);
+    this->_switching_window(this->_parent_window);
     return ;
 }
-void root::on_about_game_exit_clicked() {
-    this->close();
-    return ;
+
+void root::on_cusrimizatio_back_clicked() {
+    this->_switching_window(this->_parent_window);
 }
 

@@ -22,10 +22,10 @@ private slots:
     void on_button_exit_clicked();
 
     void on_game_back_clicked();
-    void on_game_exit_clicked();
 
     void on_about_game_back_clicked();
-    void on_about_game_exit_clicked();
+
+    void on_cusrimizatio_back_clicked();
 
 private:
     enum class WINDOW_TYPES{
