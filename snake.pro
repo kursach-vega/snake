@@ -9,12 +9,12 @@ SOURCES += \
     scr/main.cpp \
     scr/root.cpp \
     scr/snake.cpp \
-    scr/field_object.cpp \
+    scr/field_object.cpp
 
 HEADERS += \
     headers/root.hpp \
     headers/snake.hpp \
-    headers/field_object.hpp \
+    headers/field_object.hpp
 
 FORMS += \
     forms/root.ui

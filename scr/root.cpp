@@ -1,9 +1,11 @@
 #include "../headers/root.hpp"
 #include "ui_root.h"
 #include <QTabBar>
-#include <QStandardItemModel>
+#include <QPainter>
+#include <QWidget>
 #include <QMediaPlayer>
-#include <QMediaPlaylist>
+#include <iostream>
+
 
 void root::_switching_window(WINDOW_TYPES other) {
     this->_parent_window = this->_current_window;
@@ -13,18 +15,27 @@ void root::_switching_window(WINDOW_TYPES other) {
     return ;
 }
 
+void root::paintEvent(QPaintEvent *event) {
+//QPainter painter(this);
+  //  this->_ui->tab_game;
+    //painter.drawLine(10, 10,400,400);
+    //std::cout << 1 << 12 << std::endl;
+
+}
+
 root::root(QWidget* parent) : QMainWindow(parent),
     _ui(new Ui::root), _game(nullptr), _timer(nullptr),
-    _current_window(WINDOW_TYPES::MENU) {
+    _current_window(WINDOW_TYPES::MENU), _state_game(GAME_TYPES::NOT_RUN) {
 
     this->_ui->setupUi(this);
+    this->_switching_window(WINDOW_TYPES::MENU);    
     this->_ui->tab_game->tabBar()->hide();
+    this->_ui->pause_window->hide(); //Пауза скрывания
     QMediaPlayer *player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/pbalykov/вега/3_семестр/МИСП/Курсовая/snake/x.mp3"));
     player->setVolume(50);
     player->play();
-
-    this->_switching_window(WINDOW_TYPES::MENU);
+    //this->_ui->tab_game->repaint();
     return ;
 }
 
@@ -60,6 +71,11 @@ void root::on_game_back_clicked() {
     return ;
 }
 
+void root::on_pause_window_exit_clicked() {
+    this->close();
+    return ;
+}
+
 void root::on_about_game_back_clicked() {
     this->_switching_window(this->_parent_window);
     return ;
@@ -68,4 +84,3 @@ void root::on_about_game_back_clicked() {
 void root::on_cusrimizatio_back_clicked() {
     this->_switching_window(this->_parent_window);
 }
-
