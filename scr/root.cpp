@@ -3,7 +3,7 @@
 #include <QTabBar>
 #include <QPainter>
 #include <QWidget>
-#include <QMediaPlayer>
+//#include <QMediaPlayer>
 #include <iostream>
 
 
@@ -31,10 +31,10 @@ root::root(QWidget* parent) : QMainWindow(parent),
     this->_switching_window(WINDOW_TYPES::MENU);    
     this->_ui->tab_game->tabBar()->hide();
     this->_ui->pause_window->hide(); //Пауза скрывания
-    QMediaPlayer *player = new QMediaPlayer;
-    player->setMedia(QUrl::fromLocalFile("/home/pbalykov/вега/3_семестр/МИСП/Курсовая/snake/x.mp3"));
-    player->setVolume(50);
-    player->play();
+    //QMediaPlayer *player = new QMediaPlayer;
+    //player->setMedia(QUrl::fromLocalFile("/home/pbalykov/вега/3_семестр/МИСП/Курсовая/snake/x.mp3"));
+    //player->setVolume(50);
+    //player->play();
     //this->_ui->tab_game->repaint();
     return ;
 }
