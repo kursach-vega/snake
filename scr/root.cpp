@@ -1,86 +1,76 @@
 #include "../headers/root.hpp"
 #include "ui_root.h"
 #include <QTabBar>
-#include <QPainter>
-#include <QWidget>
-//#include <QMediaPlayer>
+#include <QKeyEvent>
 #include <iostream>
 
-
-void root::_switching_window(WINDOW_TYPES other) {
-    this->_parent_window = this->_current_window;
-    this->_current_window = other;
+void root::_push_window(WINDOW_TYPES other) {
     int index_window = static_cast<int>(other);
-    this->_ui->tab_game->setCurrentIndex(index_window);
+    this->_stack_windows.push(other);
+    this->_ui->tabl_snake->setCurrentIndex(index_window);
     return ;
 }
 
-void root::paintEvent(QPaintEvent *event) {
-//QPainter painter(this);
-  //  this->_ui->tab_game;
-    //painter.drawLine(10, 10,400,400);
-    //std::cout << 1 << 12 << std::endl;
+void root::_pop_window() {
+    this->_stack_windows.pop();
+    int index_window = static_cast<int>(this->_stack_windows.top());
+    this->_ui->tabl_snake->setCurrentIndex(index_window);
+    return ;
+}
+
+void root::keyPressEvent(QKeyEvent* event) {
+    quint32 x = event->nativeVirtualKey();
+    std::cout << x << std::endl;
 
 }
 
 root::root(QWidget* parent) : QMainWindow(parent),
-    _ui(new Ui::root), _game(nullptr), _timer(nullptr),
-    _current_window(WINDOW_TYPES::MENU), _state_game(GAME_TYPES::NOT_RUN) {
+    _ui(new Ui::root), _timer(nullptr), _state_game(GAME_TYPES::NOT_RUN) {
 
     this->_ui->setupUi(this);
-    this->_switching_window(WINDOW_TYPES::MENU);    
-    this->_ui->tab_game->tabBar()->hide();
-    this->_ui->pause_window->hide(); //Пауза скрывания
-    //QMediaPlayer *player = new QMediaPlayer;
-    //player->setMedia(QUrl::fromLocalFile("/home/pbalykov/вега/3_семестр/МИСП/Курсовая/snake/x.mp3"));
-    //player->setVolume(50);
-    //player->play();
-    //this->_ui->tab_game->repaint();
+    this->_ui->tabl_snake->tabBar()->hide();
+    this->_push_window(WINDOW_TYPES::MENU);
+
+    this->_ui->end_game_window->hide();
+    this->_ui->pause_window->hide();
+
     return ;
 }
 
 root::~root() {
-    delete this->_timer;
-    delete this->_game;
     delete this->_ui;
+    delete this->_timer;
     return ;
 }
 
-void root::on_button_game_clicked() {
-    this->_switching_window(WINDOW_TYPES::GAME);
+void root::on_transition_game_clicked() {
+    this->_push_window(WINDOW_TYPES::GAME);
     return ;
 }
 
-void root::on_button_customization_clicked() {
-    this->_switching_window(WINDOW_TYPES::CUSTOMIZATION);
+void root::on_transition_cystom_clicked() {
+    this->_push_window(WINDOW_TYPES::CUSTOMIZATION);
     return ;
 }
 
-void root::on_button_abaut_game_clicked() {
-    this->_switching_window(WINDOW_TYPES::ABOUT_THE_GAME);
+void root::on_transition_about_game_clicked() {
+    this->_push_window(WINDOW_TYPES::ABOUT_THE_GAME);
     return ;
 }
 
-void root::on_button_exit_clicked() {
+void root::on_exit_button_clicked() {
     this->close();
     return ;
 }
 
-void root::on_game_back_clicked() {
-    this->_switching_window(this->_parent_window);
+void root::on_customization_back_clicked() {
+    this->_pop_window();
     return ;
 }
 
-void root::on_pause_window_exit_clicked() {
-    this->close();
-    return ;
-}
 
 void root::on_about_game_back_clicked() {
-    this->_switching_window(this->_parent_window);
+    this->_pop_window();
     return ;
 }
 
-void root::on_cusrimizatio_back_clicked() {
-    this->_switching_window(this->_parent_window);
-}

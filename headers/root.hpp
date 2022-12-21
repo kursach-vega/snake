@@ -1,12 +1,14 @@
 #ifndef ROOT_HPP
 #define ROOT_HPP
 
-#include "snake.hpp"
 #include <QMainWindow>
+#include <QStack>
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class root; }
+namespace Ui {
+    class root;
+}
 QT_END_NAMESPACE
 
 class root : public QMainWindow {
@@ -16,17 +18,18 @@ public:
     ~root();
 
 private slots:
-    void on_button_game_clicked();
-    void on_button_customization_clicked();
-    void on_button_abaut_game_clicked();
-    void on_button_exit_clicked();
+    void on_transition_game_clicked();
+    void on_transition_cystom_clicked();
+    void on_transition_about_game_clicked();
+    void on_exit_button_clicked();
 
-    void on_game_back_clicked();
-    void on_pause_window_exit_clicked();
+
+    void on_customization_back_clicked();
 
     void on_about_game_back_clicked();
 
-    void on_cusrimizatio_back_clicked();
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     enum class WINDOW_TYPES {
@@ -42,13 +45,12 @@ private:
         END_GAME,
     };
 
-    void _switching_window(WINDOW_TYPES other);
-    void paintEvent(QPaintEvent *event);
+    void _push_window(WINDOW_TYPES other);
+    void _pop_window();
+
     Ui::root* _ui;
-    Snake* _game;
     QTimer* _timer;
-    WINDOW_TYPES _parent_window;
-    WINDOW_TYPES _current_window;
+    QStack<WINDOW_TYPES> _stack_windows;
     GAME_TYPES _state_game;
 };
 

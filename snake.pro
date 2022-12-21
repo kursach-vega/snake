@@ -1,5 +1,4 @@
 QT       += core gui
-#QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -8,13 +7,11 @@ CONFIG += c++17
 SOURCES += \
     scr/main.cpp \
     scr/root.cpp \
-    scr/snake.cpp \
-    scr/field_object.cpp
+    scr/tab_game.cpp
 
 HEADERS += \
     headers/root.hpp \
-    headers/snake.hpp \
-    headers/field_object.hpp
+    headers/tab_game.hpp
 
 FORMS += \
     forms/root.ui
