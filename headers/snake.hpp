@@ -21,7 +21,7 @@ public:
 	Field_Object get_snake_tail() const;
 	const std::vector<Field_Object>& get_snake() const;
 	const std::set<Field_Object>& get_apple() const;
-    const std::vector<Field_Object>& get_obstacles() const;
+        const std::vector<Field_Object>& get_obstacles() const;
 	bool set_step(STEP_SNAKE new_step);
 	bool step();
 	size_t get_gray_apples() const;
