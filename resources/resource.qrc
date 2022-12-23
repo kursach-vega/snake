@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/resource_img">
+        <file>images/apple.png</file>
+        <file>images/field.png</file>
+    </qresource>
+    <qresource prefix="/resource_music">
+        <file>music/song.mp3</file>
+    </qresource>
+</RCC>

@@ -314,7 +314,7 @@ QSlider:hover {
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QLCDNumber" name="lcdNumber_3">
+           <widget class="QLCDNumber" name="timer_game_widget">
             <property name="minimumSize">
              <size>
               <width>0</width>

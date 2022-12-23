@@ -18,14 +18,43 @@ void root::_pop_window() {
     return ;
 }
 
+void root::_enabling_pause() {
+    this->_state_game = GAME_TYPES::PAUSE;
+    this->_ui->pause_window->show();
+    //.. тут как будет игра будем что то тормозить
+}
+
+void root::_ending_pause() {
+    this->_state_game = GAME_TYPES::GAME;
+    this->_ui->pause_window->hide();
+    // .. тут описать оптяь возрат в игру
+}
+
+void root::_game_step() {
+
+    return ;
+}
+
 void root::keyPressEvent(QKeyEvent* event) {
-    quint32 x = event->nativeVirtualKey();
-    std::cout << x << std::endl;
+    if (this->_stack_windows.top() != WINDOW_TYPES::GAME) {
+        return ;
+    }
+    int key = event->key();
+    switch (key) {
+        case Qt::Key_Escape:
+            if ( this->_state_game == GAME_TYPES::GAME) {
+                this->_enabling_pause();
+            }
+            else if (this->_state_game == GAME_TYPES::PAUSE ) {
+                this->_ending_pause();
+            }
+    }
 
 }
 
 root::root(QWidget* parent) : QMainWindow(parent),
-    _ui(new Ui::root), _timer(nullptr), _state_game(GAME_TYPES::NOT_RUN) {
+    _ui(new Ui::root), _timer_game(nullptr), _snake_game(nullptr),
+    _state_game(GAME_TYPES::GAME), _secund_timer(200) {
 
     this->_ui->setupUi(this);
     this->_ui->tabl_snake->tabBar()->hide();
@@ -39,12 +68,20 @@ root::root(QWidget* parent) : QMainWindow(parent),
 
 root::~root() {
     delete this->_ui;
-    delete this->_timer;
+    delete this->_timer_game;
+    delete this->_snake_game;
     return ;
 }
 
 void root::on_transition_game_clicked() {
     this->_push_window(WINDOW_TYPES::GAME);
+    this->_timer_game = new QTimer(this);
+    auto lambda_function_signal = [this]()->void{
+        this->_game_step();
+        return ;
+    };
+    this->connect(this->_timer_game, &QTimer::timeout, lambda_function_signal);
+    this->_timer_game->start(this->_secund_timer);
     return ;
 }
 

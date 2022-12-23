@@ -2,6 +2,7 @@
 #define TAB_GAME_HPP
 
 #include <QWidget>
+#include <QPixmap>
 
 class Tab_game : public QWidget {
     Q_OBJECT
@@ -10,7 +11,7 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *) override;
+
 };
 
 #endif

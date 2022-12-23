@@ -1,6 +1,7 @@
 #ifndef ROOT_HPP
 #define ROOT_HPP
 
+#include "snake.hpp"
 #include <QMainWindow>
 #include <QStack>
 #include <QTimer>
@@ -39,19 +40,27 @@ private:
         ABOUT_THE_GAME = 3,
     };
     enum class GAME_TYPES {
-        NOT_RUN,
-        RUN,
+        NOT_GAME,
+        GAME,
         PAUSE,
         END_GAME,
     };
 
     void _push_window(WINDOW_TYPES other);
     void _pop_window();
+    void _enabling_pause();
+    void _ending_pause();
+    void _game_step();
 
     Ui::root* _ui;
-    QTimer* _timer;
+    QTimer* _timer_game;
+    Snake* _snake_game;
+
     QStack<WINDOW_TYPES> _stack_windows;
     GAME_TYPES _state_game;
+    unsigned short _secund_timer;
+
+
 };
 
 #endif
