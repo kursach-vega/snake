@@ -136,7 +136,12 @@ bool Snake::step() {
 			break;
 		}	
 	}
-	return this->_end_game;
+    return this->_end_game;
+}
+
+STEP_SNAKE Snake::get_step() const
+{
+
 }
 
 size_t Snake::get_gray_apples() const {
