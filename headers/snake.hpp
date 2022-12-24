@@ -24,6 +24,7 @@ public:
         const std::vector<Field_Object>& get_obstacles() const;
 	bool set_step(STEP_SNAKE new_step);
 	bool step();
+    STEP_SNAKE get_step() const;
 	size_t get_gray_apples() const;
 
 private:

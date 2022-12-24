@@ -139,9 +139,8 @@ bool Snake::step() {
     return this->_end_game;
 }
 
-STEP_SNAKE Snake::get_step() const
-{
-
+STEP_SNAKE Snake::get_step() const {
+    return this->_step;
 }
 
 size_t Snake::get_gray_apples() const {

@@ -10,11 +10,12 @@ class Tab_game : public QWidget {
     Q_OBJECT
 public:
     explicit Tab_game(QWidget *parent = nullptr);
+    ~Tab_game();
 
     void start(std::function<void()>& completion_game,
                std::function<void()>& increasing_counters);
     void pause();
-    void stop();
+    void exit();
     void renewals();
     void restart(std::function<void()>& completion_game,
                  std::function<void()>& increasing_counters);
