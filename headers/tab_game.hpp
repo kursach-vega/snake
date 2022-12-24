@@ -3,7 +3,6 @@
 
 #include "snake.hpp"
 #include <QWidget>
-#include <QPixmap>
 #include <QTimer>
 
 class Tab_game : public QWidget {

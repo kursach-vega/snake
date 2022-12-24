@@ -20,8 +20,7 @@ public:
 	Field_Object get_snake_head() const;
 	Field_Object get_snake_tail() const;
 	const std::vector<Field_Object>& get_snake() const;
-	const std::set<Field_Object>& get_apple() const;
-        const std::vector<Field_Object>& get_obstacles() const;
+    const Field_Object& get_apple() const;
 	bool set_step(STEP_SNAKE new_step);
 	bool step();
     STEP_SNAKE get_step() const;
@@ -39,8 +38,7 @@ private:
 
 	std::vector<std::vector<TYPE_FIELD_OBJECT> > _data;
 	std::vector<Field_Object> _snake;
-	std::set<Field_Object> _apple;
-	std::vector<Field_Object> _obstacles;
+    Field_Object _apple;
 };
 
 #endif

@@ -9,13 +9,15 @@ SOURCES += \
     scr/root.cpp \
     scr/tab_game.cpp \
     scr/snake.cpp \
-    scr/field_object.cpp
+    scr/field_object.cpp \
+    scr/draw_image.cpp
 
 HEADERS += \
     headers/root.hpp \
     headers/tab_game.hpp \
     headers/snake.hpp \
-    headers/field_object.hpp
+    headers/field_object.hpp \
+    headers/draw_image.hpp 
 
 FORMS += \
     forms/root.ui

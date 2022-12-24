@@ -6,11 +6,11 @@
 enum class TYPE_FIELD_OBJECT {
 	APPLE,
 	NONE,
-	OBSTACLES,
 	SNAKE,
 };
 
 struct Field_Object {
+    Field_Object() = default;
 	Field_Object(short y, short x, TYPE_FIELD_OBJECT type);
 	bool operator<(const Field_Object& other) const;
 	short y;
