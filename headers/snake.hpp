@@ -4,6 +4,7 @@
 #include "field_object.hpp"
 #include <vector>
 #include <set>
+#include <deque>
 
 enum class STEP_SNAKE {
 	RIGHT = -1,
@@ -38,6 +39,7 @@ private:
 
 	std::vector<std::vector<TYPE_FIELD_OBJECT> > _data;
 	std::vector<Field_Object> _snake;
+    std::deque<STEP_SNAKE> _step_snake;
     Field_Object _apple;
 };
 

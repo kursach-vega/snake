@@ -2,7 +2,6 @@
 #include "ui_root.h"
 #include <QTabBar>
 #include <QKeyEvent>
-#include <iostream>
 
 void root::_push_window(WINDOW_TYPES other) {
     int index_window = static_cast<int>(other);
@@ -19,15 +18,15 @@ void root::_pop_window() {
 }
 
 void root::_enabling_pause() {
+    this->_ui->game->pause();
     this->_state_game = GAME_TYPES::PAUSE;
     this->_ui->pause_window->show();
-    //.. тут как будет игра будем что то тормозить
 }
 
 void root::_ending_pause() {
     this->_state_game = GAME_TYPES::GAME;
     this->_ui->pause_window->hide();
-    // .. тут описать оптяь возрат в игру
+    this->_ui->game->renewals();
 }
 
 void root::_game_step() {
@@ -74,14 +73,18 @@ root::~root() {
 }
 
 void root::on_transition_game_clicked() {
-    this->_push_window(WINDOW_TYPES::GAME);
-    this->_timer_game = new QTimer(this);
-    auto lambda_function_signal = [this]()->void{
-        this->_game_step();
+    auto end_game_tab_lada = [this](){
         return ;
     };
-    this->connect(this->_timer_game, &QTimer::timeout, lambda_function_signal);
-    this->_timer_game->start(this->_secund_timer);
+    auto increasing_counters = [this](){
+        int score = this->_ui->game->get_score();
+        int timer = this->_ui->game->get_time();
+        this->_ui->timer_game_widget->display(timer);
+        this->_ui->score_apple_widget->display(score);
+        return ;
+    };
+    this->_ui->game->start(end_game_tab_lada, increasing_counters);
+    this->_push_window(WINDOW_TYPES::GAME);
     return ;
 }
 

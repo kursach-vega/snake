@@ -12,13 +12,12 @@ public:
     explicit Tab_game(QWidget *parent = nullptr);
     ~Tab_game();
 
-    void start(std::function<void()>& completion_game,
-               std::function<void()>& increasing_counters);
+    void start(std::function<void()> completion_game,
+               std::function<void()> increasing_counters);
     void pause();
     void exit();
     void renewals();
-    void restart(std::function<void()>& completion_game,
-                 std::function<void()>& increasing_counters);
+    void restart();
     void keyboard(QKeyEvent* event);
     size_t get_score() const;
     size_t get_time() const;

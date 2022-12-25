@@ -2,8 +2,12 @@
     <qresource prefix="/resource_img">
         <file>images/apple.png</file>
         <file>images/field.png</file>
+        <file>images/snake_body.png</file>
+        <file>images/snake_head.png</file>
+        <file>images/snake_tail.png</file>
     </qresource>
     <qresource prefix="/resource_music">
         <file>music/song.mp3</file>
+        <file>music/gulp.mp3</file>
     </qresource>
 </RCC>

@@ -1,5 +1,7 @@
 #include "../headers/snake.hpp"
 #include <cstdlib>
+#include <cstdlib>
+#include <ctime>
 
 Field_Object Snake::_generation_apple() const {
     size_t score_free_electrons = this->_FREE_ELEMENTS;
@@ -48,7 +50,7 @@ Snake::Snake(const size_t HEIGHT, const size_t WIDTH) : _WIDTH(WIDTH),
     _gray_apples(0), _end_game(false),
     _data(HEIGHT, (std::vector<TYPE_FIELD_OBJECT> (WIDTH,
                                          TYPE_FIELD_OBJECT::NONE))) {
-
+    std::srand(std::time(nullptr));
     this->_data[1][0] = TYPE_FIELD_OBJECT::SNAKE;
 	this->_data[1][1] = TYPE_FIELD_OBJECT::SNAKE;
     this->_snake.push_back(make_Field_Object(1, 1, TYPE_FIELD_OBJECT::SNAKE));

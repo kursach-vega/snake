@@ -28,11 +28,11 @@ void Tab_game::_step() {
 
 
 Tab_game::Tab_game(QWidget *parent)
-    : QWidget(parent), _SECUND_TIMER(200),
-      _timer_signal(new QTimer(this)), _m_seconds(0), _seconds(0),
+    : QWidget(parent), _SECUND_TIMER(200), _game(nullptr),
+      _timer_signal(new QTimer(this)),
+      _m_seconds(0), _seconds(0),
       _image_apple(":/resource_img/images/apple.png"),
-      _image_field(":/resource_img/images/field.png")  {
-
+      _image_field(":/resource_img/images/field.png") {
 
     auto lamda_signal = [this](){
         this->_step();
@@ -50,8 +50,8 @@ Tab_game::~Tab_game() {
     return ;
 }
 
-void Tab_game::start(std::function<void ()> &completion_game,
-                     std::function<void ()> &increasing_counters) {
+void Tab_game::start(std::function<void ()> completion_game,
+                     std::function<void ()> increasing_counters) {
     this->_completion_game = completion_game;
     this->_increasing_counters = increasing_counters;
     delete this->_game;
@@ -62,7 +62,9 @@ void Tab_game::start(std::function<void ()> &completion_game,
 }
 
 void Tab_game::pause() {
-    this->_timer_signal->stop();
+    if (this->_timer_signal->isActive()) {
+            this->_timer_signal->stop();
+    }
     this->_new_value = this->_game->get_step();
     return ;
 }
@@ -74,21 +76,21 @@ void Tab_game::exit() {
 }
 
 void Tab_game::renewals() {
-    this->_timer_signal->start(this->_SECUND_TIMER);
-    this->repaint();
+    if (!this->_timer_signal->isActive()) {
+        this->_timer_signal->start(this->_SECUND_TIMER);
+        this->repaint();
+    }
     return ;
 }
 
-void Tab_game::restart(std::function<void ()> &completion_game,
-                       std::function<void ()> &increasing_counters) {
-
-    this->_timer_signal->stop();
+void Tab_game::restart() {
+    if (this->_timer_signal->isActive()) {
+        this->_timer_signal->stop();
+    }
     delete this->_game;
     this->_new_value = STEP_SNAKE::RIGHT;
     this->_m_seconds = 0;
     this->_seconds = 0;
-    this->_completion_game = completion_game;
-    this->_increasing_counters = increasing_counters;
     this->_game = new Snake(20, 20);
     this->_new_value = this->_game->get_step();
     this->_timer_signal->start(this->_SECUND_TIMER);
@@ -96,7 +98,7 @@ void Tab_game::restart(std::function<void ()> &completion_game,
     return ;
 }
 
-void Tab_game::keyboard(QKeyEvent *event) {
+void Tab_game::keyboard(QKeyEvent* event) {
     switch ( event->key() ) {
         case  Qt::Key_Up :
             this->_new_value = STEP_SNAKE::UP;
@@ -127,21 +129,14 @@ size_t Tab_game::get_time() const {
 
 void Tab_game::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
+    if ( !this->_game ) {
+        return ;
+    }
     QPainter canvas(this);
     int x_field = this->width() / 2 - this->_image_field.width() / 2;
-    int y_field = this->height() / 2 - this->_image_field.height() / 2 + 30;
+    int y_field = this->height() / 2 - this->_image_field.height() / 2 + 2;
     this->_image_field.draw(canvas, x_field, y_field);
-    this->_image_apple.draw(canvas, 88, 68);
-    //_image_apple.draw(canvas, 100, 100, ROTATE::NONE);
-   // QPixmap myPixmap(":/resource_img/images/field.png");
-   // Q_ASSERT(!myPixmap.isNull());
-    //QPainter canvas(this);
-   // canvas.drawPixmap(100, 100, myPixmap);
-   // QPixmap myPixmap1(":/resource_img/images/apple.png");
-   // canvas.drawPixmap(100, 100, myPixmap1);
-
-
-
-    //canvas.drawRect(74, 55, 600, 600);
+    Field_Object apple = this->_game->get_apple();
+    this->_image_apple.draw(canvas, apple.x * 30 + 89, apple.y * 30 + 60);
     return ;
 }

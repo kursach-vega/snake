@@ -344,7 +344,7 @@ background-color: rgb(46, 136, 21);</string>
            </spacer>
           </item>
           <item>
-           <widget class="QLCDNumber" name="lcdNumber_4">
+           <widget class="QLCDNumber" name="score_apple_widget">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -434,7 +434,7 @@ background-color: rgb(46, 136, 21);</string>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_5">
                <item>
-                <widget class="QLCDNumber" name="lcdNumber_2">
+                <widget class="QLCDNumber" name="time_end_game">
                  <property name="font">
                   <font>
                    <pointsize>17</pointsize>
@@ -465,7 +465,7 @@ background-color: rgb(46, 136, 21);</string>
                 </spacer>
                </item>
                <item>
-                <widget class="QLCDNumber" name="lcdNumber">
+                <widget class="QLCDNumber" name="score_apple_end_game">
                  <property name="font">
                   <font>
                    <pointsize>17</pointsize>
