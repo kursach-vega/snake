@@ -1,10 +1,9 @@
-#ifndef DRAW_IMAGE_H
-#define DRAW_IMAGE_H
+#ifndef DRAW_IMAGE_HPP
+#define DRAW_IMAGE_HPP
 
 #include <QString>
 #include <QPixmap>
 #include <QPainter>
-
 
 enum class ROTATE {
         RIGHT = 0,
@@ -14,18 +13,18 @@ enum class ROTATE {
         NONE = -1,
 };
 
-class Draw_image {
+class Draw_image  {
 public:
-  Draw_image(const QString& file_path);
+    Draw_image(const QString& FILE_PATH);
 
-  void drawRotate(QPainter* canvas, short x, short y, ROTATE direction);
-  int height() const;
-  int width() const;
-  QPixmap get_images() const;
+    void draw(QPainter& canvas, short x, short y,
+              ROTATE direction = ROTATE::NONE);
+    int height() const;
+    int width() const;
+    QPixmap get_images() const;
 
 private:
-  QPixmap images;
-
+    QPixmap _images;
 };
 
-#endif // DRAW_IMAGE_H
+#endif

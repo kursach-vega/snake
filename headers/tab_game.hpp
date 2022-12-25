@@ -2,6 +2,7 @@
 #define TAB_GAME_HPP
 
 #include "snake.hpp"
+#include "draw_image.hpp"
 #include <QWidget>
 #include <QTimer>
 
@@ -29,6 +30,7 @@ public:
     void _step();
 
     const unsigned short _SECUND_TIMER;
+
     Snake* _game;
     QTimer* _timer_signal;
     std::function<void()> _completion_game;
@@ -36,6 +38,9 @@ public:
     STEP_SNAKE _new_value;
     size_t _m_seconds;
     size_t _seconds;
+    Draw_image _image_apple;
+    Draw_image _image_field;
+
 };
 
 #endif

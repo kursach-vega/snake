@@ -28,8 +28,11 @@ void Tab_game::_step() {
 
 
 Tab_game::Tab_game(QWidget *parent)
-    : QWidget(parent), _SECUND_TIMER(200), _game(new Snake(20, 20)), _timer_signal(new QTimer(this)),
-    _new_value(_game->get_step()), _m_seconds(0), _seconds(0) {
+    : QWidget(parent), _SECUND_TIMER(200),
+      _timer_signal(new QTimer(this)), _m_seconds(0), _seconds(0),
+      _image_apple(":/resource_img/images/apple.png"),
+      _image_field(":/resource_img/images/field.png")  {
+
 
     auto lamda_signal = [this](){
         this->_step();
@@ -40,7 +43,10 @@ Tab_game::Tab_game(QWidget *parent)
 }
 
 Tab_game::~Tab_game() {
-    this->exit();
+    delete this->_game;
+    delete this->_timer_signal;
+    this->_game = nullptr;
+    this->_timer_signal = nullptr;
     return ;
 }
 
@@ -48,6 +54,9 @@ void Tab_game::start(std::function<void ()> &completion_game,
                      std::function<void ()> &increasing_counters) {
     this->_completion_game = completion_game;
     this->_increasing_counters = increasing_counters;
+    delete this->_game;
+    this->_game = new Snake(20, 20);
+    this->_new_value = this->_game->get_step();
     this->_timer_signal->start(this->_SECUND_TIMER);
     return ;
 }
@@ -59,8 +68,8 @@ void Tab_game::pause() {
 }
 
 void Tab_game::exit() {
-    delete this->_timer_signal;
     delete this->_game;
+    this->_game = nullptr;
     return ;
 }
 
@@ -118,12 +127,18 @@ size_t Tab_game::get_time() const {
 
 void Tab_game::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
-    QPixmap myPixmap(":/resource_img/images/field.png");
-    Q_ASSERT(!myPixmap.isNull());
     QPainter canvas(this);
-    canvas.drawPixmap(100, 100, myPixmap);
-    QPixmap myPixmap1(":/resource_img/images/apple.png");
-    canvas.drawPixmap(100, 100, myPixmap1);
+    int x_field = this->width() / 2 - this->_image_field.width() / 2;
+    int y_field = this->height() / 2 - this->_image_field.height() / 2 + 30;
+    this->_image_field.draw(canvas, x_field, y_field);
+    this->_image_apple.draw(canvas, 100, 80);
+    //_image_apple.draw(canvas, 100, 100, ROTATE::NONE);
+   // QPixmap myPixmap(":/resource_img/images/field.png");
+   // Q_ASSERT(!myPixmap.isNull());
+    //QPainter canvas(this);
+   // canvas.drawPixmap(100, 100, myPixmap);
+   // QPixmap myPixmap1(":/resource_img/images/apple.png");
+   // canvas.drawPixmap(100, 100, myPixmap1);
 
 
 

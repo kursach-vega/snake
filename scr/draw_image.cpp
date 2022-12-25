@@ -1,30 +1,30 @@
 #include "../headers/draw_image.hpp"
 
 Draw_image::Draw_image(const QString& FILE_PATH) :
-    images(FILE_PATH) {
+    _images(FILE_PATH) {
     return;
 }
 
 int Draw_image::height() const {
-    return this->images.height();
+    return this->_images.height();
 }
 
 int Draw_image::width() const {
-    return this->images.width();
+    return this->_images.width();
 }
 
-void Draw_image::drawRotate(QPainter* canvas, short x, short y,
-                            ROTATE direction = ROTATE::NONE) {
+void Draw_image::draw(QPainter& canvas, short x, short y,
+                      ROTATE direction) {
     int radius = static_cast<int>(direction);
     if ( direction == ROTATE::NONE ) {
-        canvas-> drawPixmap(x, y, images);
+        canvas.drawPixmap(x, y, this->_images);
         return;
     }
     QTransform tr_image;
     tr_image.rotate(radius);
-    images = images.transformed(tr_image);
-    canvas-> drawPixmap(x, y, images);
+    this->_images = this->_images.transformed(tr_image);
+    canvas.drawPixmap(x, y, this->_images);
     tr_image.rotate(-radius);
-    images = images.transformed(tr_image);
+    this->_images = this->_images.transformed(tr_image);
     return ;
 }
