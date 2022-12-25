@@ -131,7 +131,7 @@ void Tab_game::paintEvent(QPaintEvent *event) {
     int x_field = this->width() / 2 - this->_image_field.width() / 2;
     int y_field = this->height() / 2 - this->_image_field.height() / 2 + 30;
     this->_image_field.draw(canvas, x_field, y_field);
-    this->_image_apple.draw(canvas, 100, 80);
+    this->_image_apple.draw(canvas, 88, 68);
     //_image_apple.draw(canvas, 100, 100, ROTATE::NONE);
    // QPixmap myPixmap(":/resource_img/images/field.png");
    // Q_ASSERT(!myPixmap.isNull());
