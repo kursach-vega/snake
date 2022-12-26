@@ -15,7 +15,7 @@ enum class STEP_SNAKE {
 
 class Snake {
 public:
-	Snake(const size_t WIDTH, const size_t HEIGHT);
+    Snake(const size_t WIDTH, const size_t HEIGHT);
 	bool end_game() const;
 	bool wing_game() const;
 	Field_Object get_snake_head() const;
@@ -24,22 +24,23 @@ public:
     const Field_Object& get_apple() const;
 	bool set_step(STEP_SNAKE new_step);
 	bool step();
+    const std::deque<STEP_SNAKE>& get_turns() const;
     STEP_SNAKE get_step() const;
 	size_t get_gray_apples() const;
 
 private:
 	Field_Object _generation_apple() const;
 	Field_Object _new_index_snake() const;
-	const size_t _WIDTH;
-	const size_t _HEIGHT; 
-	const size_t _FREE_ELEMENTS;
+    const ptrdiff_t _WIDTH;
+    const ptrdiff_t _HEIGHT;
+    const size_t _FREE_ELEMENTS;
 	STEP_SNAKE _step;
 	size_t _gray_apples;
 	bool _end_game;
 
 	std::vector<std::vector<TYPE_FIELD_OBJECT> > _data;
 	std::vector<Field_Object> _snake;
-    std::deque<STEP_SNAKE> _step_snake;
+    std::deque<STEP_SNAKE> _turns;
     Field_Object _apple;
 };
 

@@ -585,7 +585,7 @@ background-color: rgb(46, 136, 21);</string>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_2">
                <item>
-                <widget class="QPushButton" name="button_resume">
+                <widget class="QPushButton" name="continue_pause">
                  <property name="font">
                   <font>
                    <pointsize>17</pointsize>
@@ -597,7 +597,7 @@ background-color: rgb(46, 136, 21);</string>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="button_transition_cystom_pause">
+                <widget class="QPushButton" name="continut_settings">
                  <property name="font">
                   <font>
                    <pointsize>17</pointsize>

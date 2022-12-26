@@ -1,6 +1,25 @@
 #include "../headers/tab_game.hpp"
 #include <QPainter>
 #include <QKeyEvent>
+#include <iostream>
+
+namespace {
+    ROTATE translation_in_radius(STEP_SNAKE value) {
+        switch (value) {
+            case  STEP_SNAKE::UP :
+                return ROTATE::UP;
+            case  STEP_SNAKE::LEFT :
+                return ROTATE::LEFT;
+            case STEP_SNAKE::RIGHT :
+                return ROTATE::RIGHT;
+            case STEP_SNAKE::DOWN :
+                return ROTATE::DOWN;
+            default :
+                return ROTATE::NONE;
+        }
+        return ROTATE::NONE;
+    }
+}
 
 void Tab_game::_step() {
     this->_m_seconds += _SECUND_TIMER;
@@ -32,7 +51,10 @@ Tab_game::Tab_game(QWidget *parent)
       _timer_signal(new QTimer(this)),
       _m_seconds(0), _seconds(0),
       _image_apple(":/resource_img/images/apple.png"),
-      _image_field(":/resource_img/images/field.png") {
+      _image_field(":/resource_img/images/field.png"),
+      _image_snake_head(":/resource_img/images/snake_head.png"),
+      _image_snake_tail(":/resource_img/images/snake_tail.png"),
+      _image_snake_body(":/resource_img/images/snake_body.png"){
 
     auto lamda_signal = [this](){
         this->_step();
@@ -70,6 +92,9 @@ void Tab_game::pause() {
 }
 
 void Tab_game::exit() {
+    if (this->_timer_signal->isActive()) {
+            this->_timer_signal->stop();
+    }
     delete this->_game;
     this->_game = nullptr;
     return ;
@@ -133,10 +158,32 @@ void Tab_game::paintEvent(QPaintEvent *event) {
         return ;
     }
     QPainter canvas(this);
-    int x_field = this->width() / 2 - this->_image_field.width() / 2;
-    int y_field = this->height() / 2 - this->_image_field.height() / 2 + 2;
-    this->_image_field.draw(canvas, x_field, y_field);
-    Field_Object apple = this->_game->get_apple();
-    this->_image_apple.draw(canvas, apple.x * 30 + 89, apple.y * 30 + 60);
+    int x_begin = this->width() / 2 - this->_image_field.width() / 2;
+    int y_begin = this->height() / 2 - this->_image_field.height() / 2 + 22;
+    this->_image_field.draw(canvas, x_begin, y_begin);
+    const Field_Object& apple = this->_game->get_apple();
+    this->_image_apple.draw(canvas, apple.x * this->_image_apple.width() + x_begin,
+                                    apple.y * this->_image_apple.height() + y_begin);
+    const auto snake = this->_game->get_snake();
+    const auto turns = this->_game->get_turns();
+    int snake_height = this->_image_snake_body.height();
+    int snake_width = this->_image_snake_body.width();
+    for (long long i = 1; i < qMax<long long>(snake.size() - 1, 0); i++) {
+        this->_image_snake_body.draw(canvas, snake_width * snake[i].x + x_begin,
+                                     snake_height * snake[i].y + y_begin,
+                                     translation_in_radius(turns[i]));
+    }
+    snake_height = this->_image_snake_tail.height();
+    snake_width = this->_image_snake_tail.width();
+    if (snake.size() != 1) {
+        this->_image_snake_tail.draw(canvas, snake_width * snake[0].x + x_begin,
+                                     snake_height * snake[0].y + y_begin,
+                                     translation_in_radius(turns[1]));
+    }
+    snake_height = this->_image_snake_head.height();
+    snake_width = this->_image_snake_head.width();
+    this->_image_snake_head.draw(canvas,snake_width * snake[snake.size() - 1].x + x_begin,
+                                 snake_height * snake[snake.size() - 1].y + y_begin,
+                                 translation_in_radius(turns[snake.size() - 1]));
     return ;
 }

@@ -22,9 +22,6 @@ void Draw_image::draw(QPainter& canvas, short x, short y,
     }
     QTransform tr_image;
     tr_image.rotate(radius);
-    this->_images = this->_images.transformed(tr_image);
-    canvas.drawPixmap(x, y, this->_images);
-    tr_image.rotate(-radius);
-    this->_images = this->_images.transformed(tr_image);
+    canvas.drawPixmap(x, y, this->_images.transformed(tr_image));
     return ;
 }

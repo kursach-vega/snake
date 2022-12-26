@@ -17,6 +17,19 @@ void root::_pop_window() {
     return ;
 }
 
+void root::_jamp_menu() {
+    this->_stack_windows.clear();
+    this->_push_window(WINDOW_TYPES::MENU);
+    if ( this->_state_game == GAME_TYPES::PAUSE ) {
+        this->_ui->pause_window->hide();
+    }
+    else {
+        this->_ui->end_game_window->hide();
+    }
+    this->_state_game = GAME_TYPES::NOT_GAME;
+    return ;
+}
+
 void root::_enabling_pause() {
     this->_ui->game->pause();
     this->_state_game = GAME_TYPES::PAUSE;
@@ -27,11 +40,6 @@ void root::_ending_pause() {
     this->_state_game = GAME_TYPES::GAME;
     this->_ui->pause_window->hide();
     this->_ui->game->renewals();
-}
-
-void root::_game_step() {
-
-    return ;
 }
 
 void root::keyPressEvent(QKeyEvent* event) {
@@ -47,13 +55,17 @@ void root::keyPressEvent(QKeyEvent* event) {
             else if (this->_state_game == GAME_TYPES::PAUSE ) {
                 this->_ending_pause();
             }
+        default:
+            if ( this->_state_game == GAME_TYPES::GAME) {
+                this->_ui->game->keyboard(event);
+            }
     }
-
+    return ;
 }
 
 root::root(QWidget* parent) : QMainWindow(parent),
     _ui(new Ui::root), _timer_game(nullptr), _snake_game(nullptr),
-    _state_game(GAME_TYPES::GAME), _secund_timer(200) {
+    _state_game(GAME_TYPES::NOT_GAME), _secund_timer(200) {
 
     this->_ui->setupUi(this);
     this->_ui->tabl_snake->tabBar()->hide();
@@ -85,6 +97,7 @@ void root::on_transition_game_clicked() {
     };
     this->_ui->game->start(end_game_tab_lada, increasing_counters);
     this->_push_window(WINDOW_TYPES::GAME);
+    this->_state_game = GAME_TYPES::GAME;
     return ;
 }
 
@@ -108,9 +121,24 @@ void root::on_customization_back_clicked() {
     return ;
 }
 
-
 void root::on_about_game_back_clicked() {
     this->_pop_window();
+    return ;
+}
+
+void root::on_continue_pause_clicked() {
+    this->_ending_pause();
+    return ;
+}
+
+void root::on_continut_settings_clicked() {
+    this->_push_window(WINDOW_TYPES::CUSTOMIZATION);
+    return ;
+}
+
+void root::on_return_menu_pause_clicked() {
+    this->_ui->game->exit();
+    this->_jamp_menu();
     return ;
 }
 

@@ -37,8 +37,12 @@ public:
     STEP_SNAKE _new_value;
     size_t _m_seconds;
     size_t _seconds;
+
     Draw_image _image_apple;
     Draw_image _image_field;
+    Draw_image _image_snake_head;
+    Draw_image _image_snake_tail;
+    Draw_image _image_snake_body;
 
 };
 

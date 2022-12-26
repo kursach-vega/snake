@@ -29,6 +29,10 @@ private slots:
 
     void on_about_game_back_clicked();
 
+    void on_continue_pause_clicked();
+    void on_continut_settings_clicked();
+    void on_return_menu_pause_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -43,14 +47,13 @@ private:
         NOT_GAME,
         GAME,
         PAUSE,
-        END_GAME,
     };
 
     void _push_window(WINDOW_TYPES other);
     void _pop_window();
+    void _jamp_menu();
     void _enabling_pause();
     void _ending_pause();
-    void _game_step();
 
     Ui::root* _ui;
     QTimer* _timer_game;
