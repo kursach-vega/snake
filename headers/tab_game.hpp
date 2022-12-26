@@ -9,6 +9,12 @@
 class Tab_game : public QWidget {
     Q_OBJECT
 public:
+    enum class TYPES_END_GAME {
+        WING,
+        DRAW,
+        LOSS,
+    };
+
     explicit Tab_game(QWidget *parent = nullptr);
     ~Tab_game();
 
@@ -21,6 +27,7 @@ public:
     void keyboard(QKeyEvent* event);
     size_t get_score() const;
     size_t get_time() const;
+    TYPES_END_GAME end_game() const;
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -29,7 +36,6 @@ public:
     void _step();
 
     const unsigned short _SECUND_TIMER;
-
     Snake* _game;
     QTimer* _timer_signal;
     std::function<void()> _completion_game;

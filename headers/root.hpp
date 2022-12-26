@@ -33,6 +33,12 @@ private slots:
     void on_continut_settings_clicked();
     void on_return_menu_pause_clicked();
 
+    void on_end_game_customization_clicked();
+
+    void on_return_menu_end_clicked();
+
+    void on_start_over_clicked();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -56,12 +62,9 @@ private:
     void _ending_pause();
 
     Ui::root* _ui;
-    QTimer* _timer_game;
-    Snake* _snake_game;
 
     QStack<WINDOW_TYPES> _stack_windows;
     GAME_TYPES _state_game;
-    unsigned short _secund_timer;
 
 
 };

@@ -34,12 +34,14 @@ void root::_enabling_pause() {
     this->_ui->game->pause();
     this->_state_game = GAME_TYPES::PAUSE;
     this->_ui->pause_window->show();
+    return ;
 }
 
 void root::_ending_pause() {
     this->_state_game = GAME_TYPES::GAME;
     this->_ui->pause_window->hide();
     this->_ui->game->renewals();
+    return ;
 }
 
 void root::keyPressEvent(QKeyEvent* event) {
@@ -55,6 +57,7 @@ void root::keyPressEvent(QKeyEvent* event) {
             else if (this->_state_game == GAME_TYPES::PAUSE ) {
                 this->_ending_pause();
             }
+            break;
         default:
             if ( this->_state_game == GAME_TYPES::GAME) {
                 this->_ui->game->keyboard(event);
@@ -64,8 +67,7 @@ void root::keyPressEvent(QKeyEvent* event) {
 }
 
 root::root(QWidget* parent) : QMainWindow(parent),
-    _ui(new Ui::root), _timer_game(nullptr), _snake_game(nullptr),
-    _state_game(GAME_TYPES::NOT_GAME), _secund_timer(200) {
+    _ui(new Ui::root), _state_game(GAME_TYPES::NOT_GAME) {
 
     this->_ui->setupUi(this);
     this->_ui->tabl_snake->tabBar()->hide();
@@ -74,18 +76,40 @@ root::root(QWidget* parent) : QMainWindow(parent),
     this->_ui->end_game_window->hide();
     this->_ui->pause_window->hide();
 
+    this->_ui->continue_pause->setFocusPolicy(Qt::NoFocus);
+    this->_ui->continut_settings->setFocusPolicy(Qt::NoFocus);
+    this->_ui->return_menu_pause->setFocusPolicy(Qt::NoFocus);
+
     return ;
 }
 
 root::~root() {
     delete this->_ui;
-    delete this->_timer_game;
-    delete this->_snake_game;
     return ;
 }
 
 void root::on_transition_game_clicked() {
-    auto end_game_tab_lada = [this](){
+    auto end_game = [this](){
+        int score = this->_ui->game->get_score();
+        int timer = this->_ui->game->get_time();
+        this->_ui->time_end_game->display(timer);
+        this->_ui->score_apple_end_game->display(score);
+        this->_state_game = GAME_TYPES::NOT_GAME;
+        this->_ui->end_game_window->show();
+        Tab_game::TYPES_END_GAME ans = this->_ui->game->end_game();
+        switch ( ans ) {
+            case Tab_game::TYPES_END_GAME::DRAW :
+                this->_ui->end_win_text->setText("Ничья!");
+                break;
+            case Tab_game::TYPES_END_GAME::LOSS :
+                this->_ui->end_win_text->setText("Проиграли!");
+                break;
+            case Tab_game::TYPES_END_GAME::WING :
+                this->_ui->end_win_text->setText("Выйграли!");
+                break;
+            default:
+                return ;
+        }
         return ;
     };
     auto increasing_counters = [this](){
@@ -95,7 +119,7 @@ void root::on_transition_game_clicked() {
         this->_ui->score_apple_widget->display(score);
         return ;
     };
-    this->_ui->game->start(end_game_tab_lada, increasing_counters);
+    this->_ui->game->start(end_game, increasing_counters);
     this->_push_window(WINDOW_TYPES::GAME);
     this->_state_game = GAME_TYPES::GAME;
     return ;
@@ -142,3 +166,19 @@ void root::on_return_menu_pause_clicked() {
     return ;
 }
 
+void root::on_end_game_customization_clicked() {
+    this->_push_window(WINDOW_TYPES::CUSTOMIZATION);
+    return ;
+}
+
+void root::on_return_menu_end_clicked() {
+    this->_ui->game->exit();
+    this->_jamp_menu();
+    return ;
+}
+
+void root::on_start_over_clicked() {
+    this->_ui->end_game_window->hide();
+    this->_ui->game->restart();
+    return ;
+}

@@ -499,7 +499,7 @@ background-color: rgb(46, 136, 21);</string>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
-                <widget class="QPushButton" name="pushButton_6">
+                <widget class="QPushButton" name="start_over">
                  <property name="font">
                   <font>
                    <pointsize>17</pointsize>
@@ -511,7 +511,7 @@ background-color: rgb(46, 136, 21);</string>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="button_transition_cystom_end">
+                <widget class="QPushButton" name="end_game_customization">
                  <property name="font">
                   <font>
                    <pointsize>17</pointsize>

@@ -1,7 +1,6 @@
 #include "../headers/tab_game.hpp"
 #include <QPainter>
 #include <QKeyEvent>
-#include <iostream>
 
 namespace {
     ROTATE translation_in_radius(STEP_SNAKE value) {
@@ -49,7 +48,6 @@ void Tab_game::_step() {
 Tab_game::Tab_game(QWidget *parent)
     : QWidget(parent), _SECUND_TIMER(200), _game(nullptr),
       _timer_signal(new QTimer(this)),
-      _m_seconds(0), _seconds(0),
       _image_apple(":/resource_img/images/apple.png"),
       _image_field(":/resource_img/images/field.png"),
       _image_snake_head(":/resource_img/images/snake_head.png"),
@@ -74,9 +72,9 @@ Tab_game::~Tab_game() {
 
 void Tab_game::start(std::function<void ()> completion_game,
                      std::function<void ()> increasing_counters) {
+    this->exit();
     this->_completion_game = completion_game;
     this->_increasing_counters = increasing_counters;
-    delete this->_game;
     this->_game = new Snake(20, 20);
     this->_new_value = this->_game->get_step();
     this->_timer_signal->start(this->_SECUND_TIMER);
@@ -95,6 +93,8 @@ void Tab_game::exit() {
     if (this->_timer_signal->isActive()) {
             this->_timer_signal->stop();
     }
+    this->_m_seconds = 0;
+    this->_seconds = 0;
     delete this->_game;
     this->_game = nullptr;
     return ;
@@ -109,13 +109,7 @@ void Tab_game::renewals() {
 }
 
 void Tab_game::restart() {
-    if (this->_timer_signal->isActive()) {
-        this->_timer_signal->stop();
-    }
-    delete this->_game;
-    this->_new_value = STEP_SNAKE::RIGHT;
-    this->_m_seconds = 0;
-    this->_seconds = 0;
+    this->exit();
     this->_game = new Snake(20, 20);
     this->_new_value = this->_game->get_step();
     this->_timer_signal->start(this->_SECUND_TIMER);
@@ -131,10 +125,10 @@ void Tab_game::keyboard(QKeyEvent* event) {
         case  Qt::Key_Down:
             this->_new_value = STEP_SNAKE::DOWN;
             break;
-        case Qt::Key_Right:
+        case Qt::Key_Right :
             this->_new_value = STEP_SNAKE::RIGHT;
             break;
-        case Qt::Key_Left:
+        case Qt::Key_Left :
             this->_new_value = STEP_SNAKE::LEFT;
             break;
         default:
@@ -150,6 +144,16 @@ size_t Tab_game::get_score() const {
 
 size_t Tab_game::get_time() const {
     return this->_seconds;
+}
+
+Tab_game::TYPES_END_GAME Tab_game::end_game() const {
+    if (this->_game->wing_game() ) {
+        return TYPES_END_GAME::WING;
+    }
+    if ( this->_game->end_game() ) {
+        return TYPES_END_GAME::LOSS;
+    }
+    return TYPES_END_GAME::DRAW;
 }
 
 void Tab_game::paintEvent(QPaintEvent *event) {
@@ -173,15 +177,11 @@ void Tab_game::paintEvent(QPaintEvent *event) {
                                      snake_height * snake[i].y + y_begin,
                                      translation_in_radius(turns[i]));
     }
-    snake_height = this->_image_snake_tail.height();
-    snake_width = this->_image_snake_tail.width();
     if (snake.size() != 1) {
         this->_image_snake_tail.draw(canvas, snake_width * snake[0].x + x_begin,
                                      snake_height * snake[0].y + y_begin,
                                      translation_in_radius(turns[1]));
     }
-    snake_height = this->_image_snake_head.height();
-    snake_width = this->_image_snake_head.width();
     this->_image_snake_head.draw(canvas,snake_width * snake[snake.size() - 1].x + x_begin,
                                  snake_height * snake[snake.size() - 1].y + y_begin,
                                  translation_in_radius(turns[snake.size() - 1]));
