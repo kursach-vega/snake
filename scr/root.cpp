@@ -18,6 +18,7 @@ void root::_pop_window() {
 }
 
 void root::_jamp_menu() {
+    this->_ui->game->exit();
     this->_stack_windows.clear();
     this->_push_window(WINDOW_TYPES::MENU);
     if ( this->_state_game == GAME_TYPES::PAUSE ) {
@@ -41,6 +42,20 @@ void root::_ending_pause() {
     this->_state_game = GAME_TYPES::GAME;
     this->_ui->pause_window->hide();
     this->_ui->game->renewals();
+    return ;
+}
+
+void root::_removing_focus_button_pause() {
+    this->_ui->continue_pause->setFocusPolicy(Qt::NoFocus);
+    this->_ui->continut_settings->setFocusPolicy(Qt::NoFocus);
+    this->_ui->return_menu_pause->setFocusPolicy(Qt::NoFocus);
+    return ;
+}
+
+void root::_removing_focus_button_end_game() {
+    this->_ui->start_over->setFocusPolicy(Qt::NoFocus);
+    this->_ui->end_game_customization->setFocusPolicy(Qt::NoFocus);
+    this->_ui->return_menu_end->setFocusPolicy(Qt::NoFocus);
     return ;
 }
 
@@ -75,10 +90,8 @@ root::root(QWidget* parent) : QMainWindow(parent),
 
     this->_ui->end_game_window->hide();
     this->_ui->pause_window->hide();
-
-    this->_ui->continue_pause->setFocusPolicy(Qt::NoFocus);
-    this->_ui->continut_settings->setFocusPolicy(Qt::NoFocus);
-    this->_ui->return_menu_pause->setFocusPolicy(Qt::NoFocus);
+    this->_removing_focus_button_pause();
+    this->_removing_focus_button_end_game();
 
     return ;
 }
@@ -161,7 +174,6 @@ void root::on_continut_settings_clicked() {
 }
 
 void root::on_return_menu_pause_clicked() {
-    this->_ui->game->exit();
     this->_jamp_menu();
     return ;
 }
@@ -172,13 +184,13 @@ void root::on_end_game_customization_clicked() {
 }
 
 void root::on_return_menu_end_clicked() {
-    this->_ui->game->exit();
     this->_jamp_menu();
     return ;
 }
 
 void root::on_start_over_clicked() {
     this->_ui->end_game_window->hide();
+    this->_state_game = GAME_TYPES::GAME;
     this->_ui->game->restart();
     return ;
 }

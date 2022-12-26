@@ -24,7 +24,6 @@ private slots:
     void on_transition_about_game_clicked();
     void on_exit_button_clicked();
 
-
     void on_customization_back_clicked();
 
     void on_about_game_back_clicked();
@@ -34,9 +33,7 @@ private slots:
     void on_return_menu_pause_clicked();
 
     void on_end_game_customization_clicked();
-
     void on_return_menu_end_clicked();
-
     void on_start_over_clicked();
 
 protected:
@@ -60,6 +57,10 @@ private:
     void _jamp_menu();
     void _enabling_pause();
     void _ending_pause();
+    void _removing_focus_button_pause();
+    void _removing_focus_button_end_game();
+
+
 
     Ui::root* _ui;
 
