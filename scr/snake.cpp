@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 Field_Object Snake::_generation_apple() const {
     size_t score_free_electrons = this->_FREE_ELEMENTS;
@@ -84,6 +85,7 @@ const std::vector<Field_Object>& Snake::get_snake() const {
 }
 
 const Field_Object& Snake::get_apple() const {
+	std::cout << this->_apple.x << " " << this->_apple.y << std::endl; 
 	return this->_apple;
 }
 
@@ -101,39 +103,38 @@ bool Snake::step() {
 	Field_Object new_index = this->_new_index_snake();
 	Field_Object snake_tail = this->get_snake_tail();
 	this->_data[snake_tail.y][snake_tail.x] = TYPE_FIELD_OBJECT::NONE;
-    switch ( this->_data[new_index.y][new_index.x] ) {
+        switch ( this->_data[new_index.y][new_index.x] ) {
 		case TYPE_FIELD_OBJECT::SNAKE : {
 			this->_end_game = true;
 			this->_data[snake_tail.y][snake_tail.x] = snake_tail.type; 
 			break;
 		}
 		case TYPE_FIELD_OBJECT::APPLE : {
-            this->_turns.push_back(this->_step);
+	                this->_turns.push_back(this->_step);
 			this->_data[snake_tail.y][snake_tail.x] = snake_tail.type; 
 			this->_gray_apples += 1;
 		 	this->_snake.push_back(new_index);
-            Field_Object new_index_apple = this->_generation_apple();
+            		Field_Object new_index_apple = this->_generation_apple();
 			this->_data[new_index.y][new_index.x] = new_index.type;
 			if ( new_index_apple.x == -1 ) {
-                this->_end_game = false;
+		                this->_end_game = false;
 				break;
 			}
-            this->_apple = new_index_apple;
+                        this->_apple = new_index_apple;
 			this->_data[new_index_apple.y][new_index_apple.x] = 
 								 new_index_apple.type;
 			break;
 		}
 		case TYPE_FIELD_OBJECT::NONE : {
-            this->_turns.push_back(this->_step);
-            this->_turns.pop_front();
-			this->_data[snake_tail.y][snake_tail.x] = 
-							      TYPE_FIELD_OBJECT::NONE;
-            this->_snake.erase(this->_snake.begin());
-		 	this->_snake.push_back(new_index);
-			this->_data[new_index.y][new_index.x] = new_index.type;
-			break;
-		}	
-	}
+	            this->_turns.push_back(this->_step);
+            	    this->_turns.pop_front();
+		    this->_data[snake_tail.y][snake_tail.x] = TYPE_FIELD_OBJECT::NONE;
+            	    this->_snake.erase(this->_snake.begin());
+		    this->_snake.push_back(new_index);
+		    this->_data[new_index.y][new_index.x] = new_index.type;
+		    break;
+	       }
+    }
     return this->_end_game;
 }
 

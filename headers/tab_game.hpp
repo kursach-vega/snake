@@ -3,6 +3,7 @@
 
 #include "snake.hpp"
 #include "draw_image.hpp"
+#include "music.hpp"
 #include <QWidget>
 #include <QTimer>
 
@@ -19,15 +20,17 @@ public:
     ~Tab_game();
 
     void start(std::function<void()> completion_game,
-               std::function<void()> increasing_counters);
+               std::function<void()> increasing_counters,
+	       Music* sound_sitting = nullptr);
     void pause();
     void exit();
-    void renewals();
+    void resume();
     void restart();
     void keyboard(QKeyEvent* event);
     size_t get_score() const;
     size_t get_time() const;
     TYPES_END_GAME end_game() const;
+    
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -38,6 +41,7 @@ public:
     const unsigned short _SECUND_TIMER;
     Snake* _game;
     QTimer* _timer_signal;
+    Music* _sound_sitting;
     std::function<void()> _completion_game;
     std::function<void()> _increasing_counters;
     STEP_SNAKE _new_value;

@@ -2,6 +2,7 @@
 #define ROOT_HPP
 
 #include "snake.hpp"
+#include "music.hpp"
 #include <QMainWindow>
 #include <QStack>
 #include <QTimer>
@@ -25,6 +26,11 @@ private slots:
     void on_exit_button_clicked();
 
     void on_customization_back_clicked();
+    void on_button_music_clicked();
+    void on_music_volume_valueChanged(int value);
+
+    void on_button_sound_clicked();
+    void on_sound_volume_valueChanged(int value);
 
     void on_about_game_back_clicked();
 
@@ -40,7 +46,9 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 
 private:
-    enum class WINDOW_TYPES {
+    void _start_music();
+
+    enum class VIEW_TYPES {
         MENU = 0,
         GAME = 1,
         CUSTOMIZATION = 2,
@@ -52,7 +60,7 @@ private:
         PAUSE,
     };
 
-    void _push_window(WINDOW_TYPES other);
+    void _push_window(VIEW_TYPES other);
     void _pop_window();
     void _jamp_menu();
     void _enabling_pause();
@@ -60,14 +68,14 @@ private:
     void _removing_focus_button_pause();
     void _removing_focus_button_end_game();
 
-
-
     Ui::root* _ui;
 
-    QStack<WINDOW_TYPES> _stack_windows;
+    QStack<VIEW_TYPES> _stack_windows;
     GAME_TYPES _state_game;
-
-
+    Music _music;
+    Music _sound;
+    int _music_volume;
+    int _sound_volume;
 };
 
 #endif

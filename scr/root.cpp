@@ -2,8 +2,10 @@
 #include "ui_root.h"
 #include <QTabBar>
 #include <QKeyEvent>
+#include <iostream>
 
-void root::_push_window(WINDOW_TYPES other) {
+
+void root::_push_window(VIEW_TYPES other) {
     int index_window = static_cast<int>(other);
     this->_stack_windows.push(other);
     this->_ui->tabl_snake->setCurrentIndex(index_window);
@@ -20,7 +22,7 @@ void root::_pop_window() {
 void root::_jamp_menu() {
     this->_ui->game->exit();
     this->_stack_windows.clear();
-    this->_push_window(WINDOW_TYPES::MENU);
+    this->_push_window(VIEW_TYPES::MENU);
     if ( this->_state_game == GAME_TYPES::PAUSE ) {
         this->_ui->pause_window->hide();
     }
@@ -33,6 +35,7 @@ void root::_jamp_menu() {
 
 void root::_enabling_pause() {
     this->_ui->game->pause();
+    this->_sound.stop();
     this->_state_game = GAME_TYPES::PAUSE;
     this->_ui->pause_window->show();
     return ;
@@ -41,7 +44,7 @@ void root::_enabling_pause() {
 void root::_ending_pause() {
     this->_state_game = GAME_TYPES::GAME;
     this->_ui->pause_window->hide();
-    this->_ui->game->renewals();
+    this->_ui->game->resume();
     return ;
 }
 
@@ -60,7 +63,7 @@ void root::_removing_focus_button_end_game() {
 }
 
 void root::keyPressEvent(QKeyEvent* event) {
-    if (this->_stack_windows.top() != WINDOW_TYPES::GAME) {
+    if (this->_stack_windows.top() != VIEW_TYPES::GAME) {
         return ;
     }
     int key = event->key();
@@ -82,11 +85,16 @@ void root::keyPressEvent(QKeyEvent* event) {
 }
 
 root::root(QWidget* parent) : QMainWindow(parent),
-    _ui(new Ui::root), _state_game(GAME_TYPES::NOT_GAME) {
-
+    _ui(new Ui::root), _state_game(GAME_TYPES::NOT_GAME), 
+    _music("qrc:/resource_music/music/song.mp3"), 
+    _sound("qrc:/resource_music/music/gulp.mp3", LOOPING_MODE::NOT_LOOPING) {
+     
+    this->_music_volume = 100;
+    this->_sound_volume = 100;
+    this->_music.start();
     this->_ui->setupUi(this);
     this->_ui->tabl_snake->tabBar()->hide();
-    this->_push_window(WINDOW_TYPES::MENU);
+    this->_push_window(VIEW_TYPES::MENU);
 
     this->_ui->end_game_window->hide();
     this->_ui->pause_window->hide();
@@ -115,36 +123,36 @@ void root::on_transition_game_clicked() {
                 this->_ui->end_win_text->setText("Ничья!");
                 break;
             case Tab_game::TYPES_END_GAME::LOSS :
-                this->_ui->end_win_text->setText("Проиграли!");
+                this->_ui->end_win_text->setText("Поражение!");
                 break;
             case Tab_game::TYPES_END_GAME::WING :
-                this->_ui->end_win_text->setText("Выйграли!");
+                this->_ui->end_win_text->setText("Победа!");
                 break;
             default:
                 return ;
         }
         return ;
     };
-    auto increasing_counters = [this](){
+    auto increasing_counters = [this]() {
         int score = this->_ui->game->get_score();
         int timer = this->_ui->game->get_time();
         this->_ui->timer_game_widget->display(timer);
         this->_ui->score_apple_widget->display(score);
         return ;
     };
-    this->_ui->game->start(end_game, increasing_counters);
-    this->_push_window(WINDOW_TYPES::GAME);
+    this->_ui->game->start(end_game, increasing_counters, &(this->_sound));
+    this->_push_window(VIEW_TYPES::GAME);
     this->_state_game = GAME_TYPES::GAME;
     return ;
 }
 
 void root::on_transition_cystom_clicked() {
-    this->_push_window(WINDOW_TYPES::CUSTOMIZATION);
+    this->_push_window(VIEW_TYPES::CUSTOMIZATION);
     return ;
 }
 
 void root::on_transition_about_game_clicked() {
-    this->_push_window(WINDOW_TYPES::ABOUT_THE_GAME);
+    this->_push_window(VIEW_TYPES::ABOUT_THE_GAME);
     return ;
 }
 
@@ -155,6 +163,32 @@ void root::on_exit_button_clicked() {
 
 void root::on_customization_back_clicked() {
     this->_pop_window();
+    return ;
+}
+
+void root::on_button_music_clicked() {
+    this->_music_volume = this->_music_volume ? 0 : 100; 
+    this->on_music_volume_valueChanged(this->_music_volume);
+    this->_ui->music_volume->setValue(this->_music_volume);
+    return ;
+}
+
+void root::on_music_volume_valueChanged(int value) {
+    this->_music_volume = value;
+    this->_music.set_volume(this->_music_volume);
+    return ;
+}
+
+void root::on_button_sound_clicked() {
+    this->_sound_volume = this->_sound_volume ? 0 : 100; 
+    this->on_sound_volume_valueChanged(this->_sound_volume);
+    this->_ui->sound_volume->setValue(this->_sound_volume);
+    return ;
+}
+
+void root::on_sound_volume_valueChanged(int value) {
+    this->_sound_volume = value;
+    this->_sound.set_volume(this->_sound_volume);
     return ;
 }
 
@@ -169,7 +203,7 @@ void root::on_continue_pause_clicked() {
 }
 
 void root::on_continut_settings_clicked() {
-    this->_push_window(WINDOW_TYPES::CUSTOMIZATION);
+    this->_push_window(VIEW_TYPES::CUSTOMIZATION);
     return ;
 }
 
@@ -179,7 +213,7 @@ void root::on_return_menu_pause_clicked() {
 }
 
 void root::on_end_game_customization_clicked() {
-    this->_push_window(WINDOW_TYPES::CUSTOMIZATION);
+    this->_push_window(VIEW_TYPES::CUSTOMIZATION);
     return ;
 }
 

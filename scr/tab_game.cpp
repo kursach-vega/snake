@@ -1,6 +1,7 @@
 #include "../headers/tab_game.hpp"
 #include <QPainter>
 #include <QKeyEvent>
+#include <iostream>
 
 namespace {
     ROTATE translation_in_radius(STEP_SNAKE value) {
@@ -32,8 +33,18 @@ void Tab_game::_step() {
         this->_completion_game();
         return ;
     }
+    size_t score = this->_game->get_gray_apples(); 
     this->_game->set_step(_new_value);
     this->_game->step();
+    if ( score != this->_game->get_gray_apples()) {
+	    this->_sound_sitting->start();
+	   //   QMediaPlayer* m_player = new QMediaPlayer();          
+	    //  QMediaPlaylist* m_playlist  = new QMediaPlaylist();  
+	      //m_player->setPlaylist(m_playlist);          // Установка плейлиста в аудио плеер
+	      //m_playlist->addMedia(QUrl("qrc:/resource_music/music/gulp.mp3"));       // Добавление трека в плейлист	
+	      //m_playlist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce); // Проигрываем один раз
+              //m_player->play();				   
+    }
     this->_increasing_counters();
     if ( this->_game->end_game() ) {
         this->_timer_signal->stop();
@@ -54,11 +65,11 @@ Tab_game::Tab_game(QWidget *parent)
       _image_snake_tail(":/resource_img/images/snake_tail.png"),
       _image_snake_body(":/resource_img/images/snake_body.png"){
 
-    auto lamda_signal = [this](){
+    auto lamda_signal_step = [this](){
         this->_step();
         return ;
     };
-    this->connect(this->_timer_signal, &QTimer::timeout, lamda_signal);
+    this->connect(this->_timer_signal, &QTimer::timeout, lamda_signal_step);
     return ;
 }
 
@@ -67,12 +78,16 @@ Tab_game::~Tab_game() {
     delete this->_timer_signal;
     this->_game = nullptr;
     this->_timer_signal = nullptr;
+    this->_m_seconds = 0;
+    this->_seconds = 0;
     return ;
 }
 
 void Tab_game::start(std::function<void ()> completion_game,
-                     std::function<void ()> increasing_counters) {
+                     std::function<void ()> increasing_counters,
+		     Music* sound_sitting ) {
     this->exit();
+    this->_sound_sitting = sound_sitting;
     this->_completion_game = completion_game;
     this->_increasing_counters = increasing_counters;
     this->_game = new Snake(20, 20);
@@ -100,10 +115,9 @@ void Tab_game::exit() {
     return ;
 }
 
-void Tab_game::renewals() {
+void Tab_game::resume() {
     if (!this->_timer_signal->isActive()) {
         this->_timer_signal->start(this->_SECUND_TIMER);
-        this->repaint();
     }
     return ;
 }
@@ -113,6 +127,7 @@ void Tab_game::restart() {
     this->_game = new Snake(20, 20);
     this->_new_value = this->_game->get_step();
     this->_timer_signal->start(this->_SECUND_TIMER);
+    this->_increasing_counters();
     this->repaint();
     return ;
 }
