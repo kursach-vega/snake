@@ -3,7 +3,6 @@
 
 #include "snake.hpp"
 #include "draw_image.hpp"
-#include "music.hpp"
 #include <QWidget>
 #include <QTimer>
 
@@ -20,8 +19,7 @@ public:
     ~Tab_game();
 
     void start(std::function<void()> completion_game,
-               std::function<void()> increasing_counters,
-	       Music* sound_sitting = nullptr);
+               std::function<void()> increasing_counters);
     void pause();
     void exit();
     void resume();
@@ -41,7 +39,6 @@ public:
     const unsigned short _SECUND_TIMER;
     Snake* _game;
     QTimer* _timer_signal;
-    Music* _sound_sitting;
     std::function<void()> _completion_game;
     std::function<void()> _increasing_counters;
     STEP_SNAKE _new_value;

@@ -6,7 +6,8 @@
 
 Field_Object Snake::_generation_apple() const {
     size_t score_free_electrons = this->_FREE_ELEMENTS;
-    score_free_electrons -= this->_data.size();
+    score_free_electrons -= this->_snake.size();
+    std::cout << score_free_electrons << std::endl;
 	if ( score_free_electrons == 0 ) {
 		return Field_Object(-1, -1, TYPE_FIELD_OBJECT::NONE);
 	}
@@ -85,7 +86,6 @@ const std::vector<Field_Object>& Snake::get_snake() const {
 }
 
 const Field_Object& Snake::get_apple() const {
-	std::cout << this->_apple.x << " " << this->_apple.y << std::endl; 
 	return this->_apple;
 }
 
@@ -114,13 +114,14 @@ bool Snake::step() {
 			this->_data[snake_tail.y][snake_tail.x] = snake_tail.type; 
 			this->_gray_apples += 1;
 		 	this->_snake.push_back(new_index);
-            		Field_Object new_index_apple = this->_generation_apple();
+            Field_Object new_index_apple = this->_generation_apple();
 			this->_data[new_index.y][new_index.x] = new_index.type;
 			if ( new_index_apple.x == -1 ) {
-		                this->_end_game = false;
+                std::cout << "arrr" << std::endl;
+                this->_end_game = false;
 				break;
 			}
-                        this->_apple = new_index_apple;
+            this->_apple = new_index_apple;
 			this->_data[new_index_apple.y][new_index_apple.x] = 
 								 new_index_apple.type;
 			break;

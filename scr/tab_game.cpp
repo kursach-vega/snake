@@ -1,7 +1,6 @@
 #include "../headers/tab_game.hpp"
 #include <QPainter>
 #include <QKeyEvent>
-#include <iostream>
 
 namespace {
     ROTATE translation_in_radius(STEP_SNAKE value) {
@@ -32,19 +31,9 @@ void Tab_game::_step() {
         this->_increasing_counters();
         this->_completion_game();
         return ;
-    }
-    size_t score = this->_game->get_gray_apples(); 
+    } 
     this->_game->set_step(_new_value);
     this->_game->step();
-    if ( score != this->_game->get_gray_apples()) {
-	    this->_sound_sitting->start();
-	   //   QMediaPlayer* m_player = new QMediaPlayer();          
-	    //  QMediaPlaylist* m_playlist  = new QMediaPlaylist();  
-	      //m_player->setPlaylist(m_playlist);          // Установка плейлиста в аудио плеер
-	      //m_playlist->addMedia(QUrl("qrc:/resource_music/music/gulp.mp3"));       // Добавление трека в плейлист	
-	      //m_playlist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce); // Проигрываем один раз
-              //m_player->play();				   
-    }
     this->_increasing_counters();
     if ( this->_game->end_game() ) {
         this->_timer_signal->stop();
@@ -84,10 +73,8 @@ Tab_game::~Tab_game() {
 }
 
 void Tab_game::start(std::function<void ()> completion_game,
-                     std::function<void ()> increasing_counters,
-		     Music* sound_sitting ) {
+                     std::function<void ()> increasing_counters) {
     this->exit();
-    this->_sound_sitting = sound_sitting;
     this->_completion_game = completion_game;
     this->_increasing_counters = increasing_counters;
     this->_game = new Snake(20, 20);
